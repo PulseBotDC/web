@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PulseBot — Christmas Edition</title>
+
+<!-- Works on both GitHub Pages + custom domain -->
+<base href="./">
+
+<style>
+  :root{
+    --bg-normal: #f8fafc;
+    --panel-normal: #ffffff;
+    --muted-normal: #6b7280;
+    --accent-normal: #38bdf8;
+
+    --bg-xmas: #001220;
+    --panel-xmas: #0b0b0b;
+    --muted-xmas: #9ca3af;
+    --accent-xmas: #e63946;   /* 🎄 red */
+    --accent2-xmas: #9be2ff;  /* frosty blue */
+
+    --radius: 10px;
+    --glass: rgba(255,255,255,0.04);
+    --max-width: 1100px;
+  }
+
+  html,body{height:100%;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:#111;background:#fff;}
+  .site {
+    transition: background-color .35s ease, color .35s ease;
+    min-height:100vh;
+  }
+
+  /* Theme classes */
+  .xmas-theme {
+    --bg: var(--bg-xmas);
+    --panel: var(--panel-xmas);
+    --muted: var(--muted-xmas);
+    --accent: var(--accent-xmas);
+    --accent2: var(--accent2-xmas);
+    background-color: var(--bg);
+    color: #f9fafb;
+  }
+
+  .normal-theme {
+    --bg: var(--bg-normal);
+    --panel: var(--panel-normal);
+    --muted: var(--muted-normal);
+    --accent: var(--accent-normal);
+    background-color: var(--bg);
+    color: #0f172a;
+  }
+
+  .wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 1.25rem; }
+  header { display:flex; align-items:center; justify-content:space-between; padding:1rem 0; position:sticky; top:0; z-index:60; }
+
+  .brand img { width:56px; height:56px; border-radius:12px; display:block; object-fit:contain; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)); }
+  .brand h1 { font-size:1.25rem; font-weight:800; margin:0; }
+  nav { display:flex; gap:1rem; }
+  nav a { text-decoration:none; font-weight:600; color:var(--muted); padding:0.35rem 0.6rem; border-radius:8px; transition: color .2s, background .2s; }
+  nav a:hover { color:var(--accent); background: rgba(255,255,255,0.02); }
+
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); }
+  .btn { display:inline-block; padding:0.9rem 1.6rem; border-radius:10px; font-weight:800; text-decoration:none; cursor:pointer; border:none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-secondary { background: transparent; border:1px solid rgba(255,255,255,0.04); color: var(--muted); }
+
+  .hero { text-align:left; padding:4.5rem 0; display:flex; align-items:center; gap:2rem; }
+  .hero h2 { font-size:2.8rem; color:var(--accent); margin-bottom:0.6rem; }
+  .hero p { margin:0 0 1.25rem 0; color:var(--muted); max-width:740px; }
+
+  .section { padding:3.5rem 0; }
+  .section h2 { text-align:center; font-size:2rem; margin-bottom:1.25rem; color:var(--accent); }
+  .features, .plans, .commands { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); }
+  .card, .group, .plan { background:var(--panel); padding:1.25rem; border-radius:12px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 6px 20px rgba(0,0,0,0.45); }
+
+  footer { text-align:center; padding:2rem 0; color:var(--muted); border-top:1px solid rgba(255,255,255,0.05); }
+
+  /* Snowflake decorations ❄️ */
+  .decor { position: fixed; pointer-events:none; z-index:5; opacity:0; transition:opacity .4s ease; }
+  .xmas-theme .decor { opacity:1; }
+  .snowflake {
+    color: #fff;
+    font-size: 1.6rem;
+    position: fixed;
+    top: -10%;
+    animation: fall 10s linear infinite;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0.6; }
+  }
+
+  .theme-toggle { display:inline-flex; align-items:center; gap:0.6rem; background:var(--panel); padding:0.25rem 0.45rem; border-radius:999px; border:1px solid rgba(255,255,255,0.04); cursor:pointer; }
+  .toggle-dot { width:28px;height:28px;border-radius:8px;background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; }
+</style>
+</head>
+<body>
+<div id="site" class="site xmas-theme">
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img id="logoImg" src="./images/pulsebot_xmas.png" alt="PulseBot logo">
+        <h1><span style="color:var(--accent)">PulseBot</span></h1>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:1rem">
+        <nav>
+          <a href="#features">features</a>
+          <a href="#showcase">showcase</a>
+          <a href="#plans">plans</a>
+          <a href="#contact">contact</a>
+        </nav>
+        <div id="themeToggle" class="theme-toggle" title="Toggle theme">
+          <div class="toggle-dot" id="toggleDot">🎅</div>
+          <div id="toggleLabel" style="font-weight:700;color:var(--muted);font-size:0.9rem;">Christmas</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <h2 id="hero-heading">celebrate your community 🎄</h2>
+        <p>pulsebot keeps your Discord lively this season — moderation, analytics, tickets, and good vibes wrapped in red + snow.</p>
+        <div class="buttons" style="margin-top:1.1rem;">
+          <a href="#" class="btn btn-primary">invite now</a>
+          <a href="#showcase" class="btn btn-secondary">see commands</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>features</h2>
+      <div class="features">
+        <div class="card"><h3>🎁 tickets</h3><p>holiday support system. quick replies + warm service.</p></div>
+        <div class="card"><h3>🧊 moderation</h3><p>keep it cool. safe servers with minimal stress.</p></div>
+        <div class="card"><h3>📈 analytics</h3><p>track growth + activity trends across the season.</p></div>
+        <div class="card"><h3>💬 pulse feed</h3><p>community posts that spread cheer and engagement.</p></div>
+      </div>
+    </section>
+
+    <section id="plans" class="section">
+      <h2>plans</h2>
+      <div class="plans">
+        <div class="plan"><h3>free 🎄</h3><p>core moderation + analytics tools. unwrap it instantly.</p></div>
+        <div class="plan"><h3>premium 🎅</h3><p>enhanced features, faster workflows, priority support.</p></div>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <p>© <span id="year">2025</span> pulsebot — spreading cheer worldwide.</p>
+    </footer>
+  </div>
+
+  <!-- snowflakes -->
+  <div class="decor snowflake" style="left:10%;animation-delay:0s;">❄️</div>
+  <div class="decor snowflake" style="left:30%;animation-delay:2s;">❄️</div>
+  <div class="decor snowflake" style="left:50%;animation-delay:4s;">❄️</div>
+  <div class="decor snowflake" style="left:70%;animation-delay:6s;">❄️</div>
+  <div class="decor snowflake" style="left:90%;animation-delay:8s;">❄️</div>
+</div>
+
+<script>
+const siteEl = document.getElementById('site');
+const toggle = document.getElementById('themeToggle');
+const toggleDot = document.getElementById('toggleDot');
+const toggleLabel = document.getElementById('toggleLabel');
+const LOGO = document.getElementById('logoImg');
+
+const saved = localStorage.getItem('pulsebot_theme');
+function applyTheme(theme){
+  if(theme === 'normal'){
+    siteEl.classList.remove('xmas-theme');
+    siteEl.classList.add('normal-theme');
+    toggleDot.textContent = '❄️';
+    toggleLabel.textContent = 'Normal';
+    LOGO.src = './images/pulsebot_normal.png';
+  } else {
+    siteEl.classList.remove('normal-theme');
+    siteEl.classList.add('xmas-theme');
+    toggleDot.textContent = '🎅';
+    toggleLabel.textContent = 'Christmas';
+    LOGO.src = './images/pulsebot_xmas.png';
+  }
+}
+if(saved === 'normal'){ applyTheme('normal'); }
+else { applyTheme('xmas'); localStorage.setItem('pulsebot_theme','xmas'); }
+
+toggle.addEventListener('click', ()=>{
+  const current = siteEl.classList.contains('xmas-theme') ? 'xmas' : 'normal';
+  const next = current === 'xmas' ? 'normal' : 'xmas';
+  applyTheme(next);
+  localStorage.setItem('pulsebot_theme', next);
+});
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
